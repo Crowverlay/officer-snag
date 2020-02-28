@@ -1,0 +1,45 @@
+{
+  "settings": [
+    {
+      "serverId": "682713250697052215",
+      "logChannel": "682729252696883211",
+      "outputChannel": "682713250701246514"
+    },
+    {
+      "serverId": "306187683556884481",
+      "logChannel": "682755999899320377",
+      "outputChannel": "682755999899320377"
+    }
+  ],
+  "users": [
+    {
+      "serverId": "682713250697052215",
+      "userId": "111999833404948480",
+      "incidents": [
+        {
+          "date": "2020-02-28T00:57:27.829Z",
+          "channel": "General",
+          "duration": 1265
+        },
+        {
+          "date": "2020-02-28T00:57:48.237Z",
+          "channel": "General",
+          "duration": 1277
+        }
+      ],
+      "count": 2
+    },
+    {
+      "serverId": "306187683556884481",
+      "userId": "111999833404948480",
+      "incidents": [
+        {
+          "date": "2020-02-28T01:09:36.131Z",
+          "channel": "Mixtape 🎮",
+          "duration": 1551
+        }
+      ],
+      "count": 1
+    }
+  ]
+}
