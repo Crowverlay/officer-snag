@@ -36,18 +36,30 @@ function logToChannel(guild, message) {
     guild.channels.find(channel => channel.id === settings.logChannel).send(message);
   }
 
-  console.log(message);
+  console.log(`[DEBUG] ${message}`);
 }
 
-function outputToChannel(guild, message) {
+function getOutputChannel(guild) {
   const guildId = guild.id;
   const settings = db.get('settings').find({ serverId: guildId }).value();
 
   if ('outputChannel' in settings) {
-    guild.channels.find(channel => channel.id === settings.outputChannel).send(message);
+    return guild.channels.find(channel => channel.id === settings.outputChannel);
   }
 
-  console.log(`Output: ${message}`);
+  return null;
+}
+
+function outputToChannel(guild, message) {
+  const channel = getOutputChannel(guild);
+
+  if (channel) {
+    channel.send(message);
+  } else {
+    console.log(`Server ${guild.name} (${guild.id}) has no output channel set.`);
+  }
+
+  console.log(`[OUTPUT]: ${message}`);
 }
 
 client.once('ready', () => {
@@ -112,8 +124,7 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
     // TODO: magic number bad
     if (dur < 8000) {
       const info = VM.addIncident(oldMember, { time: dur, channel: oldMember.voiceChannel }, db);
-      
-      outputToChannel(oldMember.guild, `GOTTEM! ${oldMember} misclicked the ${oldMember.voiceChannel.name} channel. Misclicks: ${info.count}.`);
+      VM.reportIncident(oldMember, info, getOutputChannel(oldMember.guild));
     }
   }
 });
