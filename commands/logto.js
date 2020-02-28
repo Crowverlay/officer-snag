@@ -14,6 +14,15 @@ module.exports = {
       return;
     }
 
+    if (args[0] === 'none') {
+      db.get('settings')
+        .find({ serverId: message.guild.id })
+        .unset('logChannel')
+        .write();
+      message.reply('No longer logging debug to discord channel.');
+      return;
+    }
+
     const re = /<\#(\d+)>/g;
     const reResult = re.exec(args[0]);
 

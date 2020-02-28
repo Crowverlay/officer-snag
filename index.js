@@ -35,6 +35,19 @@ function logToChannel(guild, message) {
   if ('logChannel' in settings) {
     guild.channels.find(channel => channel.id === settings.logChannel).send(message);
   }
+
+  console.log(message);
+}
+
+function outputToChannel(guild, message) {
+  const guildId = guild.id;
+  const settings = db.get('settings').find({ serverId: guildId }).value();
+
+  if ('outputChannel' in settings) {
+    guild.channels.find(channel => channel.id === settings.outputChannel).send(message);
+  }
+
+  console.log(`Output: ${message}`);
 }
 
 client.once('ready', () => {
@@ -97,10 +110,10 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
     logToChannel(oldMember.guild, `${oldMember.displayName} exited vc: ${oldMember.voiceChannel.name} after ${ms(dur)}.`);
 
     // TODO: magic number bad
-    if (dur < 5000) {
+    if (dur < 8000) {
       const info = VM.addIncident(oldMember, { time: dur, channel: oldMember.voiceChannel }, db);
       
-      logToChannel(oldMember.guild, `GOTTEM! ${oldMember} misclicked the ${oldMember.voiceChannel.name} channel for ${ms(dur)}. Misclicks: ${info.count}.`);
+      outputToChannel(oldMember.guild, `GOTTEM! ${oldMember} misclicked the ${oldMember.voiceChannel.name} channel. Misclicks: ${info.count}.`);
     }
   }
 });
